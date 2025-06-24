@@ -10,6 +10,7 @@ export default function UserPanel({ user }) {
   const [seleccion, setSeleccion] = useState({});
   const [error, setError] = useState("");
   const [votoEnviado, setVotoEnviado] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (verificado) {
@@ -69,6 +70,11 @@ export default function UserPanel({ user }) {
       return;
     }
     setError("");
+    setShowModal(true);
+  };
+
+  const confirmarVoto = async () => {
+    const estado = validarSeleccion();
     const idPapeletas = Object.entries(seleccion)
       .filter(([id, val]) => val)
       .map(([id]) => Number(id));
@@ -82,7 +88,35 @@ export default function UserPanel({ user }) {
     };
     const res = await axios.post("http://localhost:3000/votos", payload);
     setVotoEnviado(res.data);
+    setShowModal(false);
   };
+
+  const Modal = () => (
+    <div style={{
+      position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
+      background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000
+    }}>
+      <div style={{ background: "#fff", padding: 24, borderRadius: 8, minWidth: 300 }}>
+        <h3>Confirmar voto</h3>
+        <ul>
+          {Object.entries(seleccion)
+            .filter(([id, val]) => val)
+            .map(([id]) => (
+              <li key={id}>
+                {papeletas.find(p => p.id === Number(id))?.color} - {papeletas.find(p => p.id === Number(id))?.tipo}
+              </li>
+            ))}
+        </ul>
+        <p>
+          {validarSeleccion() === "blanco" && <span>Voto en blanco</span>}
+          {validarSeleccion() === "anulado" && <span>Voto nulo/anulado</span>}
+          {validarSeleccion() === "valido" && <span>Voto válido</span>}
+        </p>
+        <button onClick={confirmarVoto}>Confirmar</button>
+        <button onClick={() => setShowModal(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+      </div>
+    </div>
+  );
 
   if (!user) return null;
 
@@ -155,6 +189,7 @@ export default function UserPanel({ user }) {
             {error && <div style={{ color: "red" }}>{error}</div>}
             <button type="submit">Confirmar voto</button>
           </form>
+          {showModal && <Modal />}
         </div>
       );
     default:

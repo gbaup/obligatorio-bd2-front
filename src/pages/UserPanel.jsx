@@ -47,7 +47,19 @@ export default function UserPanel({ user }) {
   };
 
   const handleSeleccion = (id) => {
-    setSeleccion(sel => ({ ...sel, [id]: !sel[id] }));
+    const tipoSeleccionado = papeletas.find(p => p.id === id)?.tipo;
+    setSeleccion(sel => {
+      const nuevaSeleccion = {};
+      for (const p of papeletas) {
+        if (p.tipo === tipoSeleccionado) {
+          nuevaSeleccion[p.id] = false;
+        } else if (sel[p.id]) {
+          nuevaSeleccion[p.id] = true;
+        }
+      }
+      nuevaSeleccion[id] = !sel[id];
+      return nuevaSeleccion;
+    });
   };
 
   const handleVotar = async () => {
@@ -61,11 +73,12 @@ export default function UserPanel({ user }) {
       .filter(([id, val]) => val)
       .map(([id]) => Number(id));
     const payload = {
-      ci_ciudadano: user.ci,
       id_papeletas: idPapeletas,
       id_circuito_votado: user.circuitoAsignado.id,
       id_circuito_asignado: user.circuitoAsignado.id,
       fecha_hora: new Date().toISOString(),
+      es_observado: esObservado,
+      estado,
     };
     const res = await axios.post("http://localhost:3000/votos", payload);
     setVotoEnviado(res.data);

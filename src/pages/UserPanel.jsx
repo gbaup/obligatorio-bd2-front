@@ -116,10 +116,14 @@ export default function UserPanel({ user }) {
                     {p.color} - {p.tipo}
                   </label>
                   <div>
-                    {p.tipo === "lista" && detalles[p.id] && (
-                      <span>
-                        Lista: {detalles[p.id].numero}, Partido: {detalles[p.id].partido}, Candidato: {detalles[p.id].candidato}
-                      </span>
+                    {p.tipo === "lista" && detalles[p.id] && Array.isArray(detalles[p.id]) && (
+                      <ul>
+                        {detalles[p.id].map((l, idx) => (
+                          <li key={idx}>
+                            Candidato: {l.nombres} {l.apellidos}, Partido: {l.partido}, Órgano: {l.organo}, Departamento: {l.departamento}
+                          </li>
+                        ))}
+                      </ul>
                     )}
                     {p.tipo === "plebiscito" && detalles[p.id] && (
                       <span>

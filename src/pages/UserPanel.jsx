@@ -13,7 +13,7 @@ export default function UserPanel({ user }) {
 
   useEffect(() => {
     if (verificado) {
-      const idEleccion = 1;
+      const idEleccion = 11;
       axios
         .get(`http://localhost:3000/papeletas/validas?id_eleccion=${idEleccion}`)
         .then(async res => {

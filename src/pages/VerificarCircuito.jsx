@@ -12,7 +12,9 @@ export default function VerificarCircuito({ circuitoAsignado, onVerificar }) {
     setLocalidad(value);
     if (value.length >= 2) {
       setLoading(true);
-      const res = await axios.get(`http://localhost:3000/papeletas/circuitos-por-localidad?localidad=${value}`);
+      const res = await axios.get(
+        `http://localhost:3000/papeletas/circuitos-por-localidad?localidad=${value}`
+      );
       setCircuitos(res.data);
       setLoading(false);
     } else {
@@ -25,13 +27,23 @@ export default function VerificarCircuito({ circuitoAsignado, onVerificar }) {
       <div>
         <h2>Verificación de circuito</h2>
         <p>
-          Su circuito asignado es:<br />
-          <b>Localidad:</b> {circuitoAsignado.localidad}<br />
-          <b>Dirección:</b> {circuitoAsignado.direccion}<br />
+          Su circuito asignado es:
+          <br />
+          <b>Localidad:</b> {circuitoAsignado.localidad}
+          <br />
+          <b>Dirección:</b> {circuitoAsignado.direccion}
+          <br />
           <b>Accesible:</b> {circuitoAsignado.es_accesible ? "Sí" : "No"}
         </p>
         <p>¿Desea votar en este circuito?</p>
-        <button onClick={() => onVerificar({ circuitoIngresado: circuitoAsignado.id, esObservado: false })}>
+        <button
+          onClick={() =>
+            onVerificar({
+              circuitoIngresado: circuitoAsignado.id,
+              esObservado: false,
+            })
+          }
+        >
           Sí, votar aquí
         </button>
         <button onClick={() => setBuscandoOtro(true)}>
@@ -52,12 +64,16 @@ export default function VerificarCircuito({ circuitoAsignado, onVerificar }) {
       />
       {loading && <div>Cargando...</div>}
       <ul>
-        {circuitos.map(c => (
+        {circuitos.map((c) => (
           <li key={c.id}>
             <b>Dirección:</b> {c.direccion} <br />
             <b>Accesible:</b> {c.es_accesible ? "Sí" : "No"}
             <br />
-            <button onClick={() => onVerificar({ circuitoIngresado: c.id, esObservado: true })}>
+            <button
+              onClick={() =>
+                onVerificar({ circuitoIngresado: c.id, esObservado: true })
+              }
+            >
               Votar en este circuito (observado)
             </button>
           </li>

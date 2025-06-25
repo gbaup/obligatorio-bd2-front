@@ -14,8 +14,9 @@ export default function UserPanel({ user }) {
   const [eleccionEnCurso, setEleccionEnCurso] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/elecciones/en-curso")
-      .then(res => setEleccionEnCurso(res.data))
+    axios
+      .get("http://localhost:3000/elecciones/en-curso")
+      .then((res) => setEleccionEnCurso(res.data))
       .catch(() => setEleccionEnCurso(null));
   }, []);
 
@@ -23,19 +24,27 @@ export default function UserPanel({ user }) {
     if (verificado && eleccionEnCurso && eleccionEnCurso.id) {
       const idEleccion = 11;
       axios
-        .get(`http://localhost:3000/papeletas/validas?id_eleccion=${idEleccion}`)
-        .then(async res => {
+        .get(
+          `http://localhost:3000/papeletas/validas?id_eleccion=${idEleccion}`
+        )
+        .then(async (res) => {
           setPapeletas(res.data);
 
           const detallesObj = {};
           for (const p of res.data) {
             let det = null;
             if (p.tipo === "lista") {
-              det = await axios.get(`http://localhost:3000/papeletas/lista/${p.id}`).then(r => r.data);
+              det = await axios
+                .get(`http://localhost:3000/papeletas/lista/${p.id}`)
+                .then((r) => r.data);
             } else if (p.tipo === "plebiscito") {
-              det = await axios.get(`http://localhost:3000/papeletas/plebiscito/${p.id}`).then(r => r.data);
+              det = await axios
+                .get(`http://localhost:3000/papeletas/plebiscito/${p.id}`)
+                .then((r) => r.data);
             } else if (p.tipo === "formula") {
-              det = await axios.get(`http://localhost:3000/papeletas/formula/${p.id}`).then(r => r.data);
+              det = await axios
+                .get(`http://localhost:3000/papeletas/formula/${p.id}`)
+                .then((r) => r.data);
             }
             detallesObj[p.id] = det;
           }
@@ -57,15 +66,17 @@ export default function UserPanel({ user }) {
   const validarSeleccion = () => {
     const seleccionados = Object.entries(seleccion).filter(([id, val]) => val);
     if (seleccionados.length === 0) return "blanco";
-    const listas = papeletas.filter(p => p.tipo === "lista" && seleccion[p.id]);
-    const partidos = new Set(listas.map(l => detalles[l.id]?.partido));
+    const listas = papeletas.filter(
+      (p) => p.tipo === "lista" && seleccion[p.id]
+    );
+    const partidos = new Set(listas.map((l) => detalles[l.id]?.partido));
     if (partidos.size > 1) return "anulado";
     return "valido";
   };
 
   const handleSeleccion = (id) => {
-    const tipoSeleccionado = papeletas.find(p => p.id === id)?.tipo;
-    setSeleccion(sel => {
+    const tipoSeleccionado = papeletas.find((p) => p.id === id)?.tipo;
+    setSeleccion((sel) => {
       const nuevaSeleccion = {};
       for (const p of papeletas) {
         if (p.tipo === tipoSeleccionado) {
@@ -108,18 +119,36 @@ export default function UserPanel({ user }) {
   };
 
   const Modal = () => (
-    <div style={{
-      position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
-      background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000
-    }}>
-      <div style={{ background: "#fff", padding: 24, borderRadius: 8, minWidth: 300 }}>
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        background: "rgba(0,0,0,0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 1000,
+      }}
+    >
+      <div
+        style={{
+          background: "#fff",
+          padding: 24,
+          borderRadius: 8,
+          minWidth: 300,
+        }}
+      >
         <h3>Confirmar voto</h3>
         <ul>
           {Object.entries(seleccion)
             .filter(([id, val]) => val)
             .map(([id]) => (
               <li key={id}>
-                {papeletas.find(p => p.id === Number(id))?.color} - {papeletas.find(p => p.id === Number(id))?.tipo}
+                {papeletas.find((p) => p.id === Number(id))?.color} -{" "}
+                {papeletas.find((p) => p.id === Number(id))?.tipo}
               </li>
             ))}
         </ul>
@@ -129,7 +158,9 @@ export default function UserPanel({ user }) {
           {validarSeleccion() === "valido" && <span>Voto válido</span>}
         </p>
         <button onClick={confirmarVoto}>Confirmar</button>
-        <button onClick={() => setShowModal(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+        <button onClick={() => setShowModal(false)} style={{ marginLeft: 8 }}>
+          Cancelar
+        </button>
       </div>
     </div>
   );
@@ -140,13 +171,15 @@ export default function UserPanel({ user }) {
     return (
       <div>
         <h2>Su voto fue registrado con éxito.</h2>
-        <p>Tipo de voto: <b>{votoEnviado.estado}</b></p>
+        <p>
+          Tipo de voto: <b>{votoEnviado.estado}</b>
+        </p>
       </div>
     );
   }
 
   switch (user.rol) {
-    case 'CIUDADANO':
+    case "CIUDADANO":
       if (!verificado) {
         return (
           <VerificarCircuito
@@ -160,15 +193,26 @@ export default function UserPanel({ user }) {
       }
       return (
         <div>
-          Bienvenido, ciudadano<br />
-          {esObservado
-            ? <span style={{ color: "orange" }}>Voto observado: requiere validación del presidente</span>
-            : <span style={{ color: "green" }}>Circuito verificado correctamente</span>
-          }
+          Bienvenido, ciudadano
+          <br />
+          {esObservado ? (
+            <span style={{ color: "orange" }}>
+              Voto observado: requiere validación del presidente
+            </span>
+          ) : (
+            <span style={{ color: "green" }}>
+              Circuito verificado correctamente
+            </span>
+          )}
           <h3>Papeletas válidas:</h3>
-          <form onSubmit={e => { e.preventDefault(); handleVotar(); }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleVotar();
+            }}
+          >
             <ul>
-              {papeletas.map(p => (
+              {papeletas.map((p) => (
                 <li key={p.id}>
                   <label>
                     <input
@@ -179,15 +223,19 @@ export default function UserPanel({ user }) {
                     {p.color} - {p.tipo}
                   </label>
                   <div>
-                    {p.tipo === "lista" && detalles[p.id] && Array.isArray(detalles[p.id]) && (
-                      <ul>
-                        {detalles[p.id].map((l, idx) => (
-                          <li key={idx}>
-                            Candidato: {l.nombres} {l.apellidos}, Partido: {l.partido}, Órgano: {l.organo}, Departamento: {l.departamento}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    {p.tipo === "lista" &&
+                      detalles[p.id] &&
+                      Array.isArray(detalles[p.id]) && (
+                        <ul>
+                          {detalles[p.id].map((l, idx) => (
+                            <li key={idx}>
+                              Candidato: {l.nombres} {l.apellidos}, Partido:{" "}
+                              {l.partido}, Órgano: {l.organo}, Departamento:{" "}
+                              {l.departamento}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     {p.tipo === "plebiscito" && detalles[p.id] && (
                       <span>
                         {detalles[p.id].valor}: {detalles[p.id].descripcion}
@@ -195,7 +243,9 @@ export default function UserPanel({ user }) {
                     )}
                     {p.tipo === "formula" && detalles[p.id] && (
                       <span>
-                        Lema: {detalles[p.id].lema}, Presidente: {detalles[p.id].presidente}, Vicepresidente: {detalles[p.id].vicepresidente}
+                        Lema: {detalles[p.id].lema}, Presidente:{" "}
+                        {detalles[p.id].presidente}, Vicepresidente:{" "}
+                        {detalles[p.id].vicepresidente}
                       </span>
                     )}
                   </div>

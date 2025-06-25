@@ -11,9 +11,16 @@ export default function UserPanel({ user }) {
   const [error, setError] = useState("");
   const [votoEnviado, setVotoEnviado] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [eleccionEnCurso, setEleccionEnCurso] = useState(null);
 
   useEffect(() => {
-    if (verificado) {
+    axios.get("http://localhost:3000/elecciones/en-curso")
+      .then(res => setEleccionEnCurso(res.data))
+      .catch(() => setEleccionEnCurso(null));
+  }, []);
+
+  useEffect(() => {
+    if (verificado && eleccionEnCurso && eleccionEnCurso.id) {
       const idEleccion = 11;
       axios
         .get(`http://localhost:3000/papeletas/validas?id_eleccion=${idEleccion}`)
@@ -37,6 +44,15 @@ export default function UserPanel({ user }) {
         .catch(() => setPapeletas([]));
     }
   }, [verificado]);
+
+  if (!eleccionEnCurso) {
+    return (
+      <div>
+        <h2>No hay elección en curso hoy.</h2>
+        <p>Por favor, vuelva a intentarlo en la fecha de la elección.</p>
+      </div>
+    );
+  }
 
   const validarSeleccion = () => {
     const seleccionados = Object.entries(seleccion).filter(([id, val]) => val);

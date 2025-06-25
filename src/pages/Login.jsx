@@ -21,11 +21,15 @@ export default function Login({ onLogin }) {
         cc: cc.trim(),
         });
         onLogin(res.data);
-        navigate("/panel");
+        if (res.data.rol === "ADMIN") {
+            navigate("/admin");
+        } else {
+            navigate("/panel");
+        }
     } catch (err) {
         setError("CI o CC inválida o usuario no encontrado");
     }
-};
+  };
 
   return (
     <form onSubmit={handleSubmit}>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AgregarPapeletaForm from "./AgregarPapeletasForm";
+import AgregarPapeletaForm from "../components/AgregarPapeletasForm";
 import EditarPapeletaModal from "../components/EditarPapeletaModal";
 import axios from "axios";
 

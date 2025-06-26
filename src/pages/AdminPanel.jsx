@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AgregarPapeletaForm from "../components/AgregarPapeletasForm";
 import EditarPapeletaModal from "../components/EditarPapeletaModal";
 import HabilitarVotantePanel from "../components/HabilitarVotantePanel";
+import GestionMiembrosMesaPanel from "../components/GestionMiembrosMesaPanel";
 import axios from "axios";
 
 const TIPOS_ELECCION = [
@@ -225,6 +226,9 @@ export default function AdminPanel({ user }) {
       )}
       <div>
         <HabilitarVotantePanel />
+      </div>
+      <div>
+        <GestionMiembrosMesaPanel />
       </div>
     </div>
   );

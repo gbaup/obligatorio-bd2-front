@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default function Login({ onLogin }) {
   const [ci, setCi] = useState("");
-  const [cc, setCc] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function Login({ onLogin }) {
         `${import.meta.env.VITE_BASE_URL}/auth/login`,
         {
           ci: ciNumber,
-          cc: cc.trim(),
+          password: password.trim(),
         }
       );
       onLogin(res.data);
@@ -46,9 +46,9 @@ export default function Login({ onLogin }) {
       />
       <input
         type="text"
-        placeholder="Credencial Cívica"
-        value={cc}
-        onChange={(e) => setCc(e.target.value)}
+        placeholder="Contraseña"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         required
       />
       <button type="submit">Entrar</button>

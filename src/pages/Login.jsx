@@ -24,7 +24,7 @@ export default function Login({ onLogin }) {
         }
       );
       onLogin(res.data);
-      if (res.data.rol === "ADMIN") {
+      if (res.data.es_admin == true) {
         navigate("/admin");
       } else {
         navigate("/panel");

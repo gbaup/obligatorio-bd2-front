@@ -56,7 +56,16 @@ export default function GestionMesasPanel() {
           Crear Mesa
         </button>
       </form>
-      <ul>
+      <ul
+        style={{
+          maxHeight: "180px",
+          overflowY: "auto",
+          paddingRight: "8px",
+          marginBottom: "16px",
+          border: "1px solid #eee",
+          borderRadius: "4px",
+        }}
+      >
         {mesas.map((mesa) => (
           <li key={mesa.id}>
             Mesa #{mesa.id} - Circuito: {mesa.id_circuito} - Abierta:{" "}

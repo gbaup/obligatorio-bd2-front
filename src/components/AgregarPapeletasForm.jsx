@@ -131,9 +131,9 @@ export default function AgregarPapeletaForm({
               required
             >
               <option value="">Seleccione</option>
-              {candidatos.map((c) => (
-                <option key={c.ci_ciudadano} value={c.ci_ciudadano}>
-                  {c.nombres} {c.apellidos}
+              {candidatos.map((c, idx) => (
+                <option key={`${c.ci_ciudadano}-${idx}`} value={c.ci_ciudadano}>
+                  {c.ci_ciudadano} - {c.nombres} {c.apellidos}
                 </option>
               ))}
             </select>
@@ -217,8 +217,8 @@ export default function AgregarPapeletaForm({
               required
             >
               <option value="">Seleccione</option>
-              {candidatos.map((c) => (
-                <option key={c.ci_ciudadano} value={c.ci_ciudadano}>
+              {candidatos.map((c, idx) => (
+                <option key={`${c.ci_ciudadano}-${idx}`} value={c.ci_ciudadano}>
                   {c.ci_ciudadano} - {c.nombres} {c.apellidos}
                 </option>
               ))}
@@ -232,8 +232,8 @@ export default function AgregarPapeletaForm({
               required
             >
               <option value="">Seleccione</option>
-              {candidatos.map((c) => (
-                <option key={c.ci_ciudadano} value={c.ci_ciudadano}>
+              {candidatos.map((c, idx) => (
+                <option key={`${c.ci_ciudadano}-${idx}`} value={c.ci_ciudadano}>
                   {c.ci_ciudadano} - {c.nombres} {c.apellidos}
                 </option>
               ))}

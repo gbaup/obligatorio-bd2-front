@@ -111,12 +111,12 @@ export default function EditarPapeletaModal({
                 onChange={(e) => setCiCandidato(e.target.value)}
               >
                 <option value="">Seleccione</option>
-                {candidatos.map((c) => (
+                {candidatos.map((c, idx) => (
                   <option
-                    key={c.ci_ciudadano}
-                    value={c.ci_ciudadano.toString()}
+                    key={`${c.ci_ciudadano}-${idx}`}
+                    value={c.ci_ciudadano}
                   >
-                    {c.nombres} {c.apellidos}
+                    {c.ci_ciudadano} - {c.nombres} {c.apellidos}
                   </option>
                 ))}
               </select>
@@ -192,10 +192,10 @@ export default function EditarPapeletaModal({
                 onChange={(e) => setPresidente(e.target.value)}
               >
                 <option value="">Seleccione</option>
-                {candidatos.map((c) => (
+                {candidatos.map((c, idx) => (
                   <option
-                    key={c.ci_ciudadano}
-                    value={c.ci_ciudadano.toString()}
+                    key={`${c.ci_ciudadano}-${idx}`}
+                    value={c.ci_ciudadano}
                   >
                     {c.ci_ciudadano} - {c.nombres} {c.apellidos}
                   </option>
@@ -209,10 +209,10 @@ export default function EditarPapeletaModal({
                 onChange={(e) => setVicepresidente(e.target.value)}
               >
                 <option value="">Seleccione</option>
-                {candidatos.map((c) => (
+                {candidatos.map((c, idx) => (
                   <option
-                    key={c.ci_ciudadano}
-                    value={c.ci_ciudadano.toString()}
+                    key={`${c.ci_ciudadano}-${idx}`}
+                    value={c.ci_ciudadano}
                   >
                     {c.ci_ciudadano} - {c.nombres} {c.apellidos}
                   </option>

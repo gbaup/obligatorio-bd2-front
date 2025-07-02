@@ -3,6 +3,7 @@ import AgregarPapeletaForm from "../components/AgregarPapeletasForm";
 import EditarPapeletaModal from "../components/EditarPapeletaModal";
 import HabilitarVotantePanel from "../components/HabilitarVotantePanel";
 import GestionMiembrosMesaPanel from "../components/GestionMiembrosMesaPanel";
+import GestionMesasPanel from "../components/GestionMesasPanel";
 import axios from "axios";
 
 const TIPOS_ELECCION = [
@@ -229,6 +230,9 @@ export default function AdminPanel({ user }) {
       </div>
       <div>
         <GestionMiembrosMesaPanel />
+      </div>
+      <div>
+        <GestionMesasPanel />
       </div>
     </div>
   );

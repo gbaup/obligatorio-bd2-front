@@ -15,6 +15,7 @@ export default function UserPanel({ user }) {
   const [eleccionEnCurso, setEleccionEnCurso] = useState(null);
   const [circuitoAsignado, setCircuitoAsignado] = useState(null);
   const [circuitoCargado, setCircuitoCargado] = useState(false);
+  const [mesaAbierta, setMesaAbierta] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,6 +48,23 @@ export default function UserPanel({ user }) {
     }
     fetchCircuito();
   }, [user.cc]);
+
+  useEffect(() => {
+    async function checkMesaAbierta() {
+      if (circuitoAsignado && circuitoAsignado.id) {
+        try {
+          const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/mesas`);
+          const mesa = res.data.find(
+            (m) => m.id_circuito === circuitoAsignado.id && m.abierto
+          );
+          setMesaAbierta(mesa || null);
+        } catch {
+          setMesaAbierta(null);
+        }
+      }
+    }
+    checkMesaAbierta();
+  }, [circuitoAsignado]);
 
   useEffect(() => {
     if (verificado && eleccionEnCurso && eleccionEnCurso.id) {
@@ -106,6 +124,15 @@ export default function UserPanel({ user }) {
     return <div>Cargando circuito...</div>;
   }
 
+  if (!mesaAbierta && circuitoCargado && verificado) {
+    return (
+      <div>
+        <h2>No hay una mesa abierta en este circuito.</h2>
+        <p>Por favor, espere a que se abra una mesa para poder votar.</p>
+      </div>
+    );
+  }
+
   const validarSeleccion = () => {
     const seleccionados = Object.entries(seleccion).filter(([id, val]) => val);
     if (seleccionados.length === 0) return "blanco";
@@ -144,6 +171,15 @@ export default function UserPanel({ user }) {
   };
 
   const confirmarVoto = async () => {
+    const resCiudadano = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/ciudadanos/${user.ci}`
+    );
+    if (resCiudadano.data.ha_votado) {
+      setError("Ya has votado. No puedes votar dos veces.");
+      setShowModal(false);
+      return;
+    }
+
     const estado = validarSeleccion();
     const idPapeletas = Object.entries(seleccion)
       .filter(([id, val]) => val)
@@ -159,6 +195,10 @@ export default function UserPanel({ user }) {
     const res = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/votos`,
       payload
+    );
+    await axios.patch(
+      `${import.meta.env.VITE_BASE_URL}/ciudadanos/${user.ci}/habilitar`,
+      { ha_votado: true }
     );
     setVotoEnviado(res.data);
     setShowModal(false);

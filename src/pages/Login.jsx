@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from "../components/Header";
 
 export default function Login({ onLogin }) {
   const [ci, setCi] = useState("");
@@ -37,24 +38,30 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Iniciar sesión</h2>
-      <input
-        type="text"
-        placeholder="Cédula de Identidad"
-        value={ci}
-        onChange={(e) => setCi(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Entrar</button>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-    </form>
+    <div className="centered">
+      <div className="card">
+          <Header />
+        <h2>Iniciar sesión</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Cédula de Identidad"
+            value={ci}
+            onChange={(e) => setCi(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Entrar</button>
+        </form>
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        <button onClick={() => navigate("/register")}>Registro Ciudadano</button>
+      </div>
+    </div>
   );
 }

@@ -79,18 +79,67 @@ export default function GestionMiembrosMesaPanel() {
         style={{
           maxHeight: "180px",
           overflowY: "auto",
-          paddingRight: "8px",
+          padding: 0,
           marginBottom: "16px",
           border: "1px solid #eee",
-          borderRadius: "4px",
+          borderRadius: "8px",
+          background: "#f8faff",
+          listStyle: "none",
         }}
       >
         {miembros.map((m, idx) => (
-          <li key={`${m.ci_ciudadano}-${m.rol}-${idx}`}>
-            {m.nombres} {m.apellidos} (CI: {m.ci_ciudadano}) - Rol: {m.rol}
+          <li
+            key={`${m.ci_ciudadano}-${m.rol}-${idx}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "14px 18px",
+              borderBottom: idx !== miembros.length - 1 ? "1px solid #e0e7ff" : "none",
+              margin: 0,
+            }}
+          >
+            <div style={{ textAlign: "left" }}>
+              <div style={{ fontWeight: 600, fontSize: 16 }}>
+                {m.nombres} {m.apellidos}
+              </div>
+              <div style={{ fontSize: 14, color: "#444" }}>
+                <b>CI:</b> {m.ci_ciudadano} &nbsp;|&nbsp; <b>Rol:</b> {m.rol.charAt(0).toUpperCase() + m.rol.slice(1).toLowerCase()}
+              </div>
+              {m.organismo && (
+                <div style={{ fontSize: 13, color: "#888" }}>
+                  Organismo: {m.organismo}
+                </div>
+              )}
+              {m.mesa_asignada && (
+                <div style={{ fontSize: 13, color: "#888" }}>
+                  Mesa asignada: {m.mesa_asignada}
+                </div>
+              )}
+            </div>
             <button
-              style={{ marginLeft: 8, color: "red" }}
+              style={{
+                marginLeft: 16,
+                background: "#fff",
+                color: "#e53935",
+                border: "2px solid #e53935",
+                borderRadius: 8,
+                fontWeight: 700,
+                fontSize: 15,
+                padding: "7px 18px",
+                cursor: "pointer",
+                boxShadow: "0 1px 4px rgba(229,57,53,0.07)",
+                transition: "background 0.2s, color 0.2s, border 0.2s",
+              }}
               onClick={() => destituirMiembro(m.ci_ciudadano)}
+              onMouseOver={e => {
+                e.currentTarget.style.background = "#e53935";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.background = "#fff";
+                e.currentTarget.style.color = "#e53935";
+              }}
             >
               Destituir
             </button>

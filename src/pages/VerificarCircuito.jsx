@@ -18,12 +18,16 @@ export default function VerificarCircuito({
     setLocalidad(value);
     if (value.length >= 2) {
       setLoading(true);
-      const res = await axios.get(
-        `${
-          import.meta.env.VITE_BASE_URL
-        }/papeletas/circuitos-por-localidad?localidad=${value}`
-      );
-      setCircuitos(res.data);
+      try {
+        const res = await axios.get(
+          `${
+            import.meta.env.VITE_BASE_URL
+          }/papeletas/circuitos-por-localidad?localidad=${value}`
+        );
+        setCircuitos(res.data);
+      } catch {
+        setCircuitos([]);
+      }
       setLoading(false);
     } else {
       setCircuitos([]);

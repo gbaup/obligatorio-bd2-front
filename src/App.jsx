@@ -5,6 +5,8 @@ import RegisterCiudadano from "./pages/RegisterCiudadano";
 import UserPanel from "./pages/UserPanel";
 import AdminPanel from "./pages/AdminPanel";
 import MiembroMesaPanel from "./pages/MiembroMesaPanel";
+import ResultadosPanel from "./pages/ResultadosPanel";
+
 import "./App.css";
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
           path="/miembro-mesa"
           element={<MiembroMesaPanel user={user} />}
         />
+        <Route path="/resultados" element={<ResultadosPanel user={user} />} />
       </Routes>
     </BrowserRouter>
   );

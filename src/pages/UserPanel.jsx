@@ -62,24 +62,28 @@ export default function UserPanel({ user }) {
           const detallesObj = {};
           for (const p of res.data) {
             let det = null;
-            if (p.tipo === "lista") {
-              det = await axios
-                .get(`${import.meta.env.VITE_BASE_URL}/papeletas/lista/${p.id}`)
-                .then((r) => r.data);
-            } else if (p.tipo === "plebiscito") {
-              det = await axios
-                .get(
-                  `${import.meta.env.VITE_BASE_URL}/papeletas/plebiscito/${
-                    p.id
-                  }`
-                )
-                .then((r) => r.data);
-            } else if (p.tipo === "formula") {
-              det = await axios
-                .get(
-                  `${import.meta.env.VITE_BASE_URL}/papeletas/formula/${p.id}`
-                )
-                .then((r) => r.data);
+            if (p.id && !isNaN(Number(p.id))) {
+              if (p.tipo === "lista") {
+                det = await axios
+                  .get(
+                    `${import.meta.env.VITE_BASE_URL}/papeletas/lista/${p.id}`
+                  )
+                  .then((r) => r.data);
+              } else if (p.tipo === "plebiscito") {
+                det = await axios
+                  .get(
+                    `${import.meta.env.VITE_BASE_URL}/papeletas/plebiscito/${
+                      p.id
+                    }`
+                  )
+                  .then((r) => r.data);
+              } else if (p.tipo === "formula") {
+                det = await axios
+                  .get(
+                    `${import.meta.env.VITE_BASE_URL}/papeletas/formula/${p.id}`
+                  )
+                  .then((r) => r.data);
+              }
             }
             detallesObj[p.id] = det;
           }
@@ -233,6 +237,10 @@ export default function UserPanel({ user }) {
             (!circuitoAsignado || circuitoIngresado !== circuitoAsignado.id)
           ) {
             setCircuitoAsignado({ ...circuitoAsignado, id: circuitoIngresado });
+            setPapeletas([]); // Limpiar papeletas
+            setDetalles({}); // Limpiar detalles
+            setSeleccion({}); // Limpiar selección
+            setError(""); // Limpiar error
           }
         }}
         forzarBusqueda={!circuitoAsignado}

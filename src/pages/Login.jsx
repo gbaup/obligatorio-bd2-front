@@ -24,8 +24,10 @@ export default function Login({ onLogin }) {
         }
       );
       onLogin(res.data);
-      if (res.data.es_admin == true) {
+      if (res.data.es_admin === true) {
         navigate("/admin");
+      } else if (res.data.es_miembro_mesa === true) {
+        navigate("/miembro-mesa");
       } else {
         navigate("/panel");
       }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import VerificarCircuito from "./VerificarCircuito";
 import axios from "axios";
 
@@ -14,6 +15,15 @@ export default function UserPanel({ user }) {
   const [eleccionEnCurso, setEleccionEnCurso] = useState(null);
   const [circuitoAsignado, setCircuitoAsignado] = useState(null);
   const [circuitoCargado, setCircuitoCargado] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.es_admin) {
+      navigate("/admin", { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (!user || user.es_admin) return null;
 
   useEffect(() => {
     axios

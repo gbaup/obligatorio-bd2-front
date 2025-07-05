@@ -53,7 +53,15 @@ export default function MiembroMesaPanel({ user }) {
   const [votosTotales, setVotosTotales] = useState(0);
   const [votosValidos, setVotosValidos] = useState(0);
   const [votosObservadosCount, setVotosObservadosCount] = useState(0);
+  const [eleccionEnCurso, setEleccionEnCurso] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BASE_URL}/elecciones/en-curso`)
+      .then((res) => setEleccionEnCurso(res.data))
+      .catch(() => setEleccionEnCurso(null));
+  }, []);
 
   useEffect(() => {
     const fetchCircuitoYVotos = async () => {
@@ -256,7 +264,14 @@ export default function MiembroMesaPanel({ user }) {
               </button>
               <button
                 style={{ marginLeft: 8 }}
-                onClick={() => navigate("/resultados")}
+                onClick={() =>
+                  navigate("/resultados", {
+                    state: {
+                      id_circuito: mesa?.id_circuito,
+                      id_eleccion: eleccionEnCurso?.id,
+                    },
+                  })
+                }
               >
                 Ver resultados
               </button>

@@ -30,6 +30,8 @@ export default function ResultadosPanel() {
   const [globalResultadosPartido, setGlobalResultadosPartido] = useState(null);
   const [globalResultadosCandidato, setGlobalResultadosCandidato] =
     useState(null);
+  const [globalTotalVotosEmitidos, setGlobalTotalVotosEmitidos] =
+    useState(null);
 
   useEffect(() => {
     if (mostrarTotales) return;
@@ -49,6 +51,19 @@ export default function ResultadosPanel() {
       .catch(() => setError("No se pudieron cargar los resultados"))
       .finally(() => setLoading(false));
   }, [id_circuito, id_eleccion, mostrarTotales]);
+
+  useEffect(() => {
+    if (!mostrarTotales) return;
+    if (!id_eleccion) return;
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/votos/global/total-votos-emitidos?id_eleccion=${id_eleccion}`
+      )
+      .then((res) => setGlobalTotalVotosEmitidos(res.data.total))
+      .catch(() => setGlobalTotalVotosEmitidos(null));
+  }, [mostrarTotales, id_eleccion]);
 
   useEffect(() => {
     if (mostrarTotales) return;
@@ -210,6 +225,12 @@ export default function ResultadosPanel() {
       {mostrarTotales ? (
         <>
           <h2>Resultados Totales</h2>
+          <div>
+            <b>Total de votos emitidos:</b>{" "}
+            {globalTotalVotosEmitidos !== null
+              ? globalTotalVotosEmitidos
+              : "Cargando..."}
+          </div>
           <h3>Distribución por lista</h3>
           <table border="1" cellPadding={4}>
             <thead>

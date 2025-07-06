@@ -385,52 +385,57 @@ export default function MiembroMesaPanel({ user }) {
                                 marginTop: 8,
                               }}
                             >
-                              <button
-                                style={{
-                                  background: "#2d5be3",
-                                  color: "#fff",
-                                  borderRadius: 6,
-                                  fontWeight: 600,
-                                  fontSize: 15,
-                                  padding: "7px 18px",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  boxShadow: "0 1px 4px rgba(45,91,227,0.07)",
-                                }}
-                                onClick={() =>
-                                  setModal({
-                                    open: true,
-                                    votoId: v.id,
-                                    accion: "aprobar",
-                                  })
-                                }
-                                disabled={mesa.abierto}
-                              >
-                                Aprobar
-                              </button>
-                              <button
-                                style={{
-                                  background: "#e53935",
-                                  color: "#fff",
-                                  borderRadius: 6,
-                                  fontWeight: 600,
-                                  fontSize: 15,
-                                  padding: "7px 18px",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  boxShadow: "0 1px 4px rgba(229,57,53,0.07)",
-                                }}
-                                onClick={() =>
-                                  setModal({
-                                    open: true,
-                                    votoId: v.id,
-                                    accion: "rechazar",
-                                  })
-                                }
-                                disabled={mesa.abierto}
-                              >
-                                Rechazar
-                              </button>
+                            <button
+                              style={{
+                                background: mesa.abierto ? "#eee" : "#2d5be3",
+                                color: mesa.abierto ? "#888" : "#fff",
+                                borderRadius: 6,
+                                fontWeight: 600,
+                                fontSize: 15,
+                                padding: "7px 18px",
+                                border: "none",
+                                cursor: mesa.abierto ? "not-allowed" : "pointer",
+                                boxShadow: "0 1px 4px rgba(45,91,227,0.07)",
+                                marginRight: 8,
+                                transition: "background 0.2s, color 0.2s",
+                              }}
+                              onClick={() =>
+                                !mesa.abierto &&
+                                setModal({
+                                  open: true,
+                                  votoId: v.id,
+                                  accion: "aprobar",
+                                })
+                              }
+                              disabled={mesa.abierto}
+                            >
+                              Aprobar
+                            </button>
+                            <button
+                              style={{
+                                background: mesa.abierto ? "#eee" : "#e53935",
+                                color: mesa.abierto ? "#888" : "#fff",
+                                borderRadius: 6,
+                                fontWeight: 600,
+                                fontSize: 15,
+                                padding: "7px 18px",
+                                border: "none",
+                                cursor: mesa.abierto ? "not-allowed" : "pointer",
+                                boxShadow: "0 1px 4px rgba(229,57,53,0.07)",
+                                transition: "background 0.2s, color 0.2s",
+                              }}
+                              onClick={() =>
+                                !mesa.abierto &&
+                                setModal({
+                                  open: true,
+                                  votoId: v.id,
+                                  accion: "rechazar",
+                                })
+                              }
+                              disabled={mesa.abierto}
+                            >
+                              Rechazar
+                            </button>
                             </div>
                           </div>
                         );
